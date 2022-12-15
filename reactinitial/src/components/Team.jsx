@@ -15,7 +15,7 @@ const Team = ({ team, voteHandler, voting, voted }) => {
                 <ul>
                     {team.franchisePlayers.map(player => <li key={player.id}>
                         {player.name}
-                        {!voted ? <Button variant="outlined" disabled={voting} onClick={() => voteHandler(player.id)}>Vote</Button> : <span> - Voted</span>}
+                        {!voted ? <Button variant="outlined" disabled={voting} onClick={() => { voteHandler(player.id) }}>Vote</Button> : <span> - Voted</span>}
                     </li>)}
                 </ul>
             }

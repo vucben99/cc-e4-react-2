@@ -25,7 +25,6 @@ const App = () => {
       },
       body: JSON.stringify({ "id": id })
     })
-    // const res = await req.json()
     setVoting(false)
     setVoted(true)
   }
@@ -35,15 +34,17 @@ const App = () => {
   }, [])
 
 
-  const filteredTeams = teams ? teams.filter(team => team.franchisePlayers.filter((player) => player.name.startsWith(search))) : [] // nem működik
+  const filteredTeams = teams ? teams.filter(team => {
+    return team.franchisePlayers.some(player => player.name.toLowerCase().startsWith(search))
+  }) : []
 
   return (
     <>
       <h1>NBA teams - all star voting</h1>
 
-      <TextField label="Filter teams by player" variant="outlined" onChange={(e) => setSearch(e.target.value)} />
+      <TextField label="Filter teams by player" variant="outlined" onChange={(e) => setSearch(e.target.value.toLowerCase())} />
 
-      {teams && <>{filteredTeams.length ? filteredTeams.map(team => <Team team={team} key={team.name} voteHandler={voteHandler} voting={voting} voted={voted} setVoting={setVoting} />) : <p>Nothing found</p>}</>}
+      {teams && <>{filteredTeams.length ? filteredTeams.map(team => <Team team={team} key={team.name} voteHandler={voteHandler} voting={voting} setVoting={setVoting} voted={voted} />) : <p>Nothing found</p>}</>}
     </>
   )
 }
