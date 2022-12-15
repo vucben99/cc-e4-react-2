@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react"
 import Team from './components/Team'
+import TextField from '@mui/material/TextField'
 
 const App = () => {
 
   const [teams, setTeams] = useState(null)
   const [voting, setVoting] = useState(false)
+  const [voted, setVoted] = useState(false)
+  const [search, setSearch] = useState("")
 
   const getTeams = async () => {
     const res = await fetch("https://demoapi.com/api/teams")
@@ -22,21 +25,25 @@ const App = () => {
       },
       body: JSON.stringify({ "id": id })
     })
-    const res = await req.json()
+    // const res = await req.json()
     setVoting(false)
+    setVoted(true)
   }
 
   useEffect(() => {
     getTeams()
   }, [])
 
+
+  const filteredTeams = teams ? teams.filter(team => team.franchisePlayers.filter((player) => player.name.startsWith(search))) : [] // nem működik
+
   return (
     <>
       <h1>NBA teams - all star voting</h1>
 
-      {/* {!teams ? <LoadingMask /> : teams.map((team) => <Team team={team} key={team.name} />)} */}
-      {teams && teams.map((team) => <Team team={team} key={team.name} voteHandler={voteHandler} voting={voting} setVoting={setVoting} />)}
-      {/* {subTimerDone && <Subscription />} */}
+      <TextField label="Filter teams by player" variant="outlined" onChange={(e) => setSearch(e.target.value)} />
+
+      {teams && <>{filteredTeams.length ? filteredTeams.map(team => <Team team={team} key={team.name} voteHandler={voteHandler} voting={voting} voted={voted} setVoting={setVoting} />) : <p>Nothing found</p>}</>}
     </>
   )
 }

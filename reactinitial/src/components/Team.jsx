@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import Button from '@mui/material/Button'
 
-const Team = ({ team, voteHandler, voting }) => {
+const Team = ({ team, voteHandler, voting, voted }) => {
     const [hidden, setHidden] = useState(true)
 
     const showMoreHandler = () => {
@@ -14,12 +15,12 @@ const Team = ({ team, voteHandler, voting }) => {
                 <ul>
                     {team.franchisePlayers.map(player => <li key={player.id}>
                         {player.name}
-                        <button disabled={voting} onClick={() => voteHandler(player.id)}>Vote</button>
+                        {!voted ? <Button variant="outlined" disabled={voting} onClick={() => voteHandler(player.id)}>Vote</Button> : <span> - Voted</span>}
                     </li>)}
                 </ul>
             }
 
-            <button onClick={showMoreHandler}>{hidden ? "Show more" : "Show less"}</button>
+            <Button onClick={showMoreHandler} variant="contained">{hidden ? "Show more" : "Show less"}</Button>
         </article>
     )
 }
