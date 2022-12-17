@@ -1,26 +1,27 @@
 import { useState } from 'react'
 import Button from '@mui/material/Button'
+import Player from './Player'
 
-const Team = ({ team, voteHandler, voting, voted }) => {
+const Team = ({ team, voting, setVoting }) => {
     const [hidden, setHidden] = useState(true)
-
-    const showMoreHandler = () => {
-        setHidden((prev) => !prev)
-    }
 
     return (
         <article>
-            <p>{team.name}</p>
-            {!hidden &&
+            <h2>{team.name}</h2>
+            {
+                !hidden &&
                 <ul>
-                    {team.franchisePlayers.map(player => <li key={player.id}>
-                        {player.name}
-                        {!voted ? <Button variant="outlined" disabled={voting} onClick={() => { voteHandler(player.id) }}>Vote</Button> : <span> - Voted</span>}
-                    </li>)}
+                    {team.franchisePlayers.map(player => <Player player={player} voting={voting} setVoting={setVoting} key={player.id} />)}
                 </ul>
             }
 
-            <Button onClick={showMoreHandler} variant="contained">{hidden ? "Show more" : "Show less"}</Button>
+            <Button
+                onClick={() => setHidden(prev => !prev)}
+                variant="contained"
+            >
+
+                {hidden ? "Show more" : "Show less"}
+            </Button>
         </article>
     )
 }

@@ -5,28 +5,13 @@ import TextField from '@mui/material/TextField'
 const App = () => {
 
   const [teams, setTeams] = useState(null)
-  const [voting, setVoting] = useState(false)
-  const [voted, setVoted] = useState(false)
   const [search, setSearch] = useState("")
+  const [voting, setVoting] = useState(false)
 
   const getTeams = async () => {
     const res = await fetch("https://demoapi.com/api/teams")
     const teamData = await res.json()
     setTeams(teamData)
-  }
-
-  const voteHandler = async (id) => {
-    setVoting(true)
-    const req = await fetch("https://demoapi.com/api/vote", {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ "id": id })
-    })
-    setVoting(false)
-    setVoted(true)
   }
 
   useEffect(() => {
@@ -44,7 +29,7 @@ const App = () => {
 
       <TextField label="Filter teams by player" variant="outlined" onChange={(e) => setSearch(e.target.value.toLowerCase())} />
 
-      {teams && <>{filteredTeams.length ? filteredTeams.map(team => <Team team={team} key={team.name} voteHandler={voteHandler} voting={voting} setVoting={setVoting} voted={voted} />) : <p>Nothing found</p>}</>}
+      {teams && <>{filteredTeams.length ? filteredTeams.map(team => <Team team={team} key={team.name} voting={voting} setVoting={setVoting} />) : <p>Nothing found</p>}</>}
     </>
   )
 }
