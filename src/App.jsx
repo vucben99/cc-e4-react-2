@@ -7,7 +7,7 @@ const App = () => {
   const [teams, setTeams] = useState(null)
   const [search, setSearch] = useState("")
   const [voting, setVoting] = useState(false)
-
+  
   const getTeams = async () => {
     const res = await fetch("https://demoapi.com/api/teams")
     const teamData = await res.json()
